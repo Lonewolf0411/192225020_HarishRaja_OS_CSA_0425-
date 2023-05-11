@@ -1,0 +1,45 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 50
+int main() 
+{
+int pageFrames, pageFaults = 0, pages[MAX], frames[MAX], used[MAX] = {0}, front = 0, rear = -1, pageFound = 0;
+printf("Enter the number of page frames: ");
+scanf("%d", &pageFrames);
+printf("Enter the page reference sequence (separated by spaces): ");
+for(int i=0; i<MAX; i++) 
+{
+scanf("%d", &pages[i]);
+if(pages[i] == -1) 
+{
+break;
+}
+}
+for(int i=0; i<MAX; i++)
+{
+if(pages[i] == -1) 
+{
+break;
+}
+pageFound = 0;
+for(int j=0; j<pageFrames; j++) 
+{
+if(frames[j] == pages[i]) 
+{
+pageFound = 1;
+break;
+}
+}
+if(!pageFound) 
+{
+pageFaults++;
+rear = (rear+1)%pageFrames;
+front = (front+1)%pageFrames;
+frames[rear] = pages[i];
+used[frames[rear]] = 1;
+used[frames[front]] = 0;
+}
+}
+printf("Number of page faults: %d\n", pageFaults);
+return 0;
+}
